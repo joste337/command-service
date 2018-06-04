@@ -29,7 +29,7 @@ public class ServiceCommand extends AbstractCommand {
         } else {
             user.setServiceId(services[0].getId());
             user.setServiceName(services[0].getName());
-            return botMessages.getSuccessfullySetServiceIdByNameReply(user.getServiceName()) + "\n Found Services:\n" + Arrays.asList(services).toString();
+            return botMessages.getSuccessfullySetServiceIdByNameReply(user.getServiceName()) + "\n Found Services:\n" + Arrays.toString(services);
         }
     }
 

@@ -51,9 +51,9 @@ public class UserMessageHandler implements ApplicationContextAware {
         try {
             message = URLDecoder.decode(message, "UTF-8");
         } catch (Exception e) {
-
+            LOGGER.error("html decoding failed");
         }
-        System.out.println("escaped html message: " + message);
+        LOGGER.debug("decoded html message: {}", message);
 
         try {
             command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);

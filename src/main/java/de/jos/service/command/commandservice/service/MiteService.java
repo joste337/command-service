@@ -2,9 +2,12 @@ package de.jos.service.command.commandservice.service;
 
 import de.jos.service.command.commandservice.database.model.User;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +16,8 @@ import java.util.function.Supplier;
 
 @Service
 public class MiteService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MiteService.class);
+
     @Autowired
     private RestTemplate restTemplate;
     @Value("${miteurl.host}")
@@ -31,24 +36,20 @@ public class MiteService {
 
     public String newEntry(User user,String duration, String comment) {
         uriBuilder.setPath("/newEntry");
-        uriBuilder.addParameter("apikey", user.getApiKey());
+        uriBuilder.addParameter("apiKey", user.getApiKey());
         uriBuilder.addParameter("projectId", user.getProjectId());
         uriBuilder.addParameter("serviceId", user.getServiceId());
         uriBuilder.addParameter("duration", duration);
         uriBuilder.addParameter("comment", comment);
+        uriBuilder.addParameter("searchParam", null);
         try {
             String url = uriBuilder.build().toString();
+            LOGGER.info("Requesting url: " + url);
             return doRequestAndResetUriBuilder(() -> restTemplate.getForObject(url, String.class));
         } catch (URISyntaxException e) {
             uriBuilder.clearParameters();
             return "UriSyntaxException";
         }
-    }
-
-    private String doRequestAndResetUriBuilder(Supplier<String> supplier) {
-        String result = supplier.get();
-        uriBuilder.clearParameters();
-        return result;
     }
 
     public String getAvailableServicesByName(User user, String name) {
@@ -57,8 +58,9 @@ public class MiteService {
         uriBuilder.addParameter("searchParam", name);
         try {
             String url = uriBuilder.build().toString();
+            LOGGER.info("Requesting url: " + url);
             return doRequestAndResetUriBuilder(() -> restTemplate.getForObject(url, String.class));
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             uriBuilder.clearParameters();
             return "UriSyntaxException";
         }
@@ -70,11 +72,20 @@ public class MiteService {
         uriBuilder.addParameter("searchParam", name);
         try {
             String url = uriBuilder.build().toString();
-            System.out.println("requesting url: " + url);
+            LOGGER.info("Requesting url: " + url);
             return doRequestAndResetUriBuilder(() -> restTemplate.getForObject(url, String.class));
         } catch (URISyntaxException e) {
             uriBuilder.clearParameters();
             return "UriSyntaxException";
+        }
+    }
+
+    private String doRequestAndResetUriBuilder(Supplier<String> supplier) {
+        try {
+            String result = supplier.get();
+            return result;
+        } finally {
+            uriBuilder.clearParameters();
         }
     }
 }

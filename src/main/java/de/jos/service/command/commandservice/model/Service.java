@@ -21,6 +21,6 @@ public class Service {
     }
 
     public String toString() {
-        return name + "; " + id;
+        return name + "; " + id + "\n";
     }
 }

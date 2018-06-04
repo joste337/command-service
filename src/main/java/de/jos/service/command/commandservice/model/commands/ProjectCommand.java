@@ -30,7 +30,7 @@ public class ProjectCommand extends AbstractCommand {
         } else {
             user.setProjectId(projects[0].getId());
             user.setProjectName(projects[0].getName());
-            return botMessages.getSuccessfullySetProjectIdByNameReply(user.getProjectName()) + "\n Found Projects:\n" + Arrays.asList(projects).toString();
+            return botMessages.getSuccessfullySetProjectIdByNameReply(user.getProjectName()) + "\n Found Projects:\n" + Arrays.toString(projects);
         }
     }
 

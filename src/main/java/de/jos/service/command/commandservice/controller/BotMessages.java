@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BotMessages {
     private static final String USER_WELCOME_REPLY = "Hello %s! To help you get started, send me 'start'. :)";
-    private static final String SUCCESSFUL_ENTRY_REPLY = "A new entry with the duration '%s' minutes and the comment '%s' was created!";
+    private static final String SUCCESSFUL_ENTRY_REPLY = "A new entry with the duration %s minutes and the comment '%s' was created!";
     private static final String INVALID_COMMAND_ARGUMENTS_REPLY = "You didn't provide valid arguments for your command. Write 'help' to see how to use the available commands!'";
     private static final String NO_API_KEY_PROVIDED_REPLY = "You didn't provide an api-key yet. To do this, send me 'register (api-key)'.";
     private static final String NO_PROJECT_ID_PROVIDED_REPLY = "You didn't provide an project-id yet. To do this, send me 'project (name)'.";

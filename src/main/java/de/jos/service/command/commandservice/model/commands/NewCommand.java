@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 public class NewCommand extends AbstractCommand {
 
     public String executeCommandAndGetReply(String userMessage, User user) {
-        System.out.println("trying to execute new command with message: " + userMessage);
         if (!isValidCommand(userMessage)) {
             return botMessages.getInvalidCommandArgumentsReply();
         }
@@ -17,13 +16,13 @@ public class NewCommand extends AbstractCommand {
         String durationInMinutes = getDurationInMinutes(splitMessage[1]);
         String comment = splitMessage[2];
 
-        return miteService.newEntry(user, durationInMinutes, comment);
+        miteService.newEntry(user, durationInMinutes, comment);
+        return botMessages.getSuccessfullEntryReply(durationInMinutes, comment);
     }
 
     public boolean isValidCommand(String userMessage) {
         String[] splitMessage = StringUtils.split(userMessage, " ");
         if (splitMessage.length < 3) {
-            System.out.println("less than");
             return false;
         }
         return isValidDuration(splitMessage[1]);
