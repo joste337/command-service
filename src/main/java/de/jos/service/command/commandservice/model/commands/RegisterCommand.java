@@ -11,6 +11,7 @@ public class RegisterCommand extends AbstractCommand {
         if (!isValidCommand(userMessage)) {
             return botMessages.getInvalidCommandArgumentsReply();
         }
+        miteService.verifyApiKey(StringUtils.split(userMessage, " ")[1]);
         user.setApiKey(StringUtils.split(userMessage, " ")[1]);
         return botMessages.getSuccessfullyRegisteredReply();
     }

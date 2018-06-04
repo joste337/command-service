@@ -50,10 +50,27 @@ public class UriBuilderHelper {
         return buildUrl(path, user, new BasicNameValuePair("searchParam", searchParam));
     }
 
+    public String buildUrlForVerifyApiKey(String path, String apiKey) {
+        uriBuilder.clearParameters();
+
+        return buildUrl(path, apiKey);
+    }
+
     private String buildUrl(String path, User user, BasicNameValuePair... parameterPairs) {
         uriBuilder.setPath(path);
         uriBuilder.setParameter("apiKey", user.getApiKey());
         Arrays.stream(parameterPairs).forEach(parameterPair -> uriBuilder.addParameter(parameterPair.getName(), parameterPair.getValue()));
+
+        try {
+            return uriBuilder.build().toString();
+        } catch (URISyntaxException e) {
+            throw new CommandHandlerException(e.getMessage(), new BotReply(botMessages.getInvalidCharactersReply()));
+        }
+    }
+
+    private String buildUrl(String path, String apiKey) {
+        uriBuilder.setPath(path);
+        uriBuilder.setParameter("apiKey", apiKey);
 
         try {
             return uriBuilder.build().toString();

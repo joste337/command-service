@@ -54,10 +54,9 @@ public class UserMessageHandler implements ApplicationContextAware {
         Command command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);
 
         String userId = request.getHeader("client-token") + messengerId;
+        User user = userManager.getUserById(userId, userName);
 
         BotReply botReply;
-
-        User user = userManager.getUserById(userId, userName);
 
         if (command instanceof NewCommand) {
             botReply = new BotReply(userManager.isNotVeriefiedUser(user).orElse(command.executeCommandAndGetReply(message, user)));

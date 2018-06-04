@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 
 @ControllerAdvice
@@ -20,29 +21,33 @@ public class ErrorAdvice {
 
     @ExceptionHandler({NoSuchBeanDefinitionException.class})
     @ResponseBody
-    public BotReply handleNoSuchBeanDefinitionException(NoSuchBeanDefinitionException exception) {
+    public BotReply handleNoSuchBeanDefinitionException(NoSuchBeanDefinitionException exception, HttpServletResponse response) {
         LOGGER.info("Invalid command provided: {}", exception.getMessage());
+        response.setStatus(200);
         return new BotReply(botMessages.getInvalidCommandReply());
     }
 
     @ExceptionHandler({UnsupportedEncodingException.class})
     @ResponseBody
-    public BotReply handleUnsupportedEncodingException(UnsupportedEncodingException exception) {
+    public BotReply handleUnsupportedEncodingException(UnsupportedEncodingException exception, HttpServletResponse response) {
         LOGGER.error("UnsupportedEncodingException: {}", exception.getMessage());
+        response.setStatus(200);
         return new BotReply(botMessages.getInvalidCharactersReply());
     }
 
     @ExceptionHandler({CommandHandlerException.class})
     @ResponseBody
-    public BotReply handleCommandHandlerException(CommandHandlerException exception) {
+    public BotReply handleCommandHandlerException(CommandHandlerException exception, HttpServletResponse response) {
         LOGGER.warn("CommandHandlerException: {}", exception.getMessage());
+        response.setStatus(200);
         return exception.getBotReply();
     }
 
     @ExceptionHandler({Exception.class})
     @ResponseBody
-    public BotReply handleCommandHandlerException(Exception exception) {
+    public BotReply handleCommandHandlerException(Exception exception, HttpServletResponse response) {
         LOGGER.error("Exception: {}", exception.getMessage());
+        response.setStatus(200);
         return new BotReply(botMessages.getGeneralErrorReply());
     }
 }

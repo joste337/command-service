@@ -37,4 +37,11 @@ public class MiteService {
         LOGGER.info("Requesting url: {}", url);
         return restTemplate.getForObject(url, String.class);
     }
+
+    public String verifyApiKey(String apiKey) {
+        String url = uriBuilderHelper.buildUrlForVerifyApiKey("/verifyApiKey", apiKey);
+
+        LOGGER.info("Requesting url: {}", url);
+        return restTemplate.getForObject(url, String.class);
+    }
 }
