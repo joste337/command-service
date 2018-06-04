@@ -3,6 +3,8 @@ package de.jos.service.command.commandservice.model.commands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.exception.CommandHandlerException;
+import de.jos.service.command.commandservice.model.BotReply;
 import de.jos.service.command.commandservice.model.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -21,7 +23,7 @@ public class ServiceCommand extends AbstractCommand {
         try {
             services = new ObjectMapper().readValue(servicesJson.get("services").toString(), Service[].class);
         } catch (Exception e) {
-            return "mapping exception";
+            throw new CommandHandlerException(e.getMessage(), new BotReply(botMessages.getGeneralErrorReply()));
         }
 
         if (services.length == 0) {

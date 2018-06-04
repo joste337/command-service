@@ -14,6 +14,8 @@ public class BotMessages {
     private static final String COMMAND_FAILED_REPLY = "Failed to execute your command :(";
     private static final String INVALID_API_KEY_REPLY = "Your provided api-key was invalid";
     private static final String INVALID_COMMAND_REPLY = "You didn't provide a valid command. To see a list of available commands, send me 'help'.";
+    private static final String INVALID_CHARACTERS_REPLY = "Sorry, your message contained invalid characters!";
+    private static final String GENERAL_ERROR_REPLY = "Oops, an unknown error occured. :(";
 
     public static String getInvalidClientReply() {
         return INVALID_CLIENT_REPLY;
@@ -76,5 +78,13 @@ public class BotMessages {
 
     public String getSuccessfullySetServiceIdByNameReply(String serviceName) {
         return "I set '" + serviceName + "' as your default service!";
+    }
+
+    public String getInvalidCharactersReply() {
+        return INVALID_CHARACTERS_REPLY;
+    }
+
+    public String getGeneralErrorReply() {
+        return GENERAL_ERROR_REPLY;
     }
 }

@@ -1,8 +1,12 @@
 package de.jos.service.command.commandservice.manager;
 
+import de.jos.service.command.commandservice.controller.BotMessages;
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.exception.CommandHandlerException;
+import de.jos.service.command.commandservice.model.BotReply;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +16,8 @@ import java.util.Arrays;
 
 @Component
 public class UriBuilderHelper {
+    @Autowired
+    private BotMessages botMessages;
     private URIBuilder uriBuilder;
     @Value("${miteurl.host}")
     private String host;
@@ -28,7 +34,7 @@ public class UriBuilderHelper {
 
     public String buildUriForNewEntry(User user, String duration, String comment) {
         uriBuilder.clearParameters();
-        
+
         return buildUrl("/newEntry", user,
                 new BasicNameValuePair("projectId", user.getProjectId()),
                 new BasicNameValuePair("serviceId", user.getServiceId()),
@@ -52,7 +58,7 @@ public class UriBuilderHelper {
         try {
             return uriBuilder.build().toString();
         } catch (URISyntaxException e) {
-            return null;
+            throw new CommandHandlerException(e.getMessage(), new BotReply(botMessages.getInvalidCharactersReply()));
         }
     }
 }

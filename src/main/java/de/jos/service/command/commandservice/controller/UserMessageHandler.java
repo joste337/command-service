@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Optional;
 
@@ -41,25 +42,16 @@ public class UserMessageHandler implements ApplicationContextAware {
     public BotReply handleMessage(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam("message") String message,
                                   @RequestParam("id") String messengerId,
-                                  @RequestParam("userName") String userName) {
+                                  @RequestParam("userName") String userName) throws UnsupportedEncodingException {
 
 //        if (!authenticationHandler.isAuthenticatedClient(request.getHeader("client-name"), request.getHeader("client-token"))) {
 //            return new BotReply(BotMessages.getInvalidClientReply());
 //        }
 
-        Command command;
-        try {
-            message = URLDecoder.decode(message, "UTF-8");
-        } catch (Exception e) {
-            LOGGER.error("html decoding failed");
-        }
+        message = URLDecoder.decode(message, "UTF-8");
         LOGGER.debug("decoded html message: {}", message);
 
-        try {
-            command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);
-        } catch (NoSuchBeanDefinitionException e) {
-            return new BotReply(botMessages.getInvalidCommandReply());
-        }
+        Command command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);
 
         String userId = request.getHeader("client-token") + messengerId;
 
