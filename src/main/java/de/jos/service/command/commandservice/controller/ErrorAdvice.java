@@ -28,14 +28,21 @@ public class ErrorAdvice {
     @ExceptionHandler({UnsupportedEncodingException.class})
     @ResponseBody
     public BotReply handleUnsupportedEncodingException(UnsupportedEncodingException exception) {
-        LOGGER.info("Invalid command provided: {}", exception.getMessage());
+        LOGGER.error("UnsupportedEncodingException: {}", exception.getMessage());
         return new BotReply(botMessages.getInvalidCharactersReply());
     }
 
     @ExceptionHandler({CommandHandlerException.class})
     @ResponseBody
     public BotReply handleCommandHandlerException(CommandHandlerException exception) {
-        LOGGER.info("CommandHandlerException: {}", exception.getMessage());
+        LOGGER.warn("CommandHandlerException: {}", exception.getMessage());
         return exception.getBotReply();
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public BotReply handleCommandHandlerException(Exception exception) {
+        LOGGER.error("Exception: {}", exception.getMessage());
+        return new BotReply(botMessages.getGeneralErrorReply());
     }
 }
