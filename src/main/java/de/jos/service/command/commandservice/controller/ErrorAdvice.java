@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 public class ErrorAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorAdvice.class);
     @Autowired
-    BotMessages botMessages;
+    private BotMessages botMessages;
 
     @ExceptionHandler({NoSuchBeanDefinitionException.class})
     @ResponseBody

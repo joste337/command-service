@@ -11,27 +11,17 @@ import java.util.UUID;
 
 @Controller
 public class AuthenticationHandler {
-
     @Autowired
     private TokenAuthRepository tokenAuthRepository;
 
-
     @GetMapping("/authenticate")
     public String authenticateClient(@RequestParam("client-name") String clientName) {
-        if (tokenAuthRepository.findById(clientName).isPresent()) {
-            return  tokenAuthRepository.findById(clientName).get().getToken();
-        } else {
-            String token = UUID.randomUUID().toString();
-            tokenAuthRepository.save(new TokenAuth(clientName, token));
-            return token;
-        }
+        TokenAuth tokenAuth = tokenAuthRepository.findById(clientName).orElse(new TokenAuth(clientName, UUID.randomUUID().toString()));
+        tokenAuthRepository.save(tokenAuth);
+        return tokenAuth.getToken();
     }
 
     public boolean isAuthenticatedClient(String clientName, String token) {
-        if (tokenAuthRepository.findById(clientName).isPresent() && tokenAuthRepository.findById(clientName).get().getToken().equals(token)) {
-            return true;
-        } else {
-            return false;
-        }
+        return tokenAuthRepository.findById(clientName).isPresent() && tokenAuthRepository.findById(clientName).get().getToken().equals(token);
     }
 }
