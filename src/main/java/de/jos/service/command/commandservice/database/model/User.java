@@ -1,8 +1,9 @@
 package de.jos.service.command.commandservice.database.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -10,10 +11,11 @@ public class User {
     private String id;
     private String name;
     private String apiKey;
-    private String projectName;
-    private String projectId;
-    private String serviceName;
-    private String serviceId;
+    private String currentProjectName;
+    private String currentProjectId;
+    private String currentServiceName;
+    private String currentServiceId;
+    private HashSet<UserSettings> shortcuts = new HashSet<>();
 
     public User() {
     }
@@ -26,10 +28,10 @@ public class User {
     public User(String id, String apiToken, String projectName, String projectId, String serviceName, String serviceId) {
         this.id = id;
         this.apiKey = apiToken;
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.serviceId = serviceId;
-        this.serviceName = serviceName;
+        this.currentProjectId = projectId;
+        this.currentProjectName = projectName;
+        this.currentServiceId = serviceId;
+        this.currentServiceName = serviceName;
     }
 
     public String getId() {
@@ -48,36 +50,36 @@ public class User {
         this.apiKey = apiKey;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getCurrentProjectName() {
+        return currentProjectName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setCurrentProjectName(String currentProjectName) {
+        this.currentProjectName = currentProjectName;
     }
 
-    public String getProjectId() {
-        return projectId;
+    public String getCurrentProjectId() {
+        return currentProjectId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setCurrentProjectId(String currentProjectId) {
+        this.currentProjectId = currentProjectId;
     }
 
-    public String getServiceName() {
-        return serviceName;
+    public String getCurrentServiceName() {
+        return currentServiceName;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setCurrentServiceName(String currentServiceName) {
+        this.currentServiceName = currentServiceName;
     }
 
-    public String getServiceId() {
-        return serviceId;
+    public String getCurrentServiceId() {
+        return currentServiceId;
     }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
+    public void setCurrentServiceId(String currentServiceId) {
+        this.currentServiceId = currentServiceId;
     }
 
     public String getName() {
@@ -88,19 +90,49 @@ public class User {
         this.name = name;
     }
 
+    public void addShortcut(UserSettings userSettings) {
+        this.shortcuts.add(userSettings);
+    }
+
+    public Set<UserSettings> getShortcuts() {
+        return shortcuts;
+    }
+
+    public void setShortcuts(HashSet<UserSettings> shortcuts) {
+        this.shortcuts = shortcuts;
+    }
+
+    public UserSettings getCurrentSettingsAsUserSettings() {
+        return new UserSettings(currentProjectId, currentServiceId);
+    }
+
     public String toReplyString() {
         String project;
         String service;
-        if (projectId == null) {
+        if (currentProjectId == null) {
             project = "You didn't set a project yet!";
         } else {
-            project = "Your current project: " + projectName + "; " + projectId;
+            project = "Your current project: " + currentProjectName + "; " + currentProjectId;
         }
-        if (this.serviceId == null) {
+        if (this.currentServiceId == null) {
             service = "You didn't set a service yet!";
         } else {
-            service = "Your current service: " + serviceName + "; " + serviceId;
+            service = "Your current service: " + currentServiceName + "; " + currentServiceId;
         }
         return project + "\n" + service;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", apiKey='" + apiKey + '\'' +
+                ", currentProjectName='" + currentProjectName + '\'' +
+                ", currentProjectId='" + currentProjectId + '\'' +
+                ", currentServiceName='" + currentServiceName + '\'' +
+                ", currentServiceId='" + currentServiceId + '\'' +
+                ", shortcuts=" + shortcuts +
+                '}';
     }
 }

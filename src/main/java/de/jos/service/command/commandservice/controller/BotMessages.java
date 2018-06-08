@@ -16,6 +16,7 @@ public class BotMessages {
     private static final String INVALID_COMMAND_REPLY = "You didn't provide a valid command. To see a list of available commands, send me 'help'.";
     private static final String INVALID_CHARACTERS_REPLY = "Sorry, your message contained invalid characters!";
     private static final String GENERAL_ERROR_REPLY = "Oops, an unknown error occured. :(";
+    private static final String SUCCESSFULL_SHORTCUT_REPLY = "Successfully set a new shortcut!";
 
     public static String getInvalidClientReply() {
         return INVALID_CLIENT_REPLY;
@@ -86,5 +87,9 @@ public class BotMessages {
 
     public String getGeneralErrorReply() {
         return GENERAL_ERROR_REPLY;
+    }
+
+    public String getSuccessfullySetShortcutReply() {
+        return SUCCESSFULL_SHORTCUT_REPLY;
     }
 }

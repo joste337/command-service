@@ -1,6 +1,7 @@
 package de.jos.service.command.commandservice.service;
 
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.database.model.UserSettings;
 import de.jos.service.command.commandservice.manager.UriBuilderHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,8 @@ public class MiteService {
     @Autowired
     private UriBuilderHelper uriBuilderHelper;
 
-    public String newEntry(User user,String duration, String comment) {
-        String url = uriBuilderHelper.buildUriForNewEntry(user, duration, comment);
+    public String newEntry(User user, UserSettings userSettings, String duration, String comment) {
+        String url = uriBuilderHelper.buildUriForNewEntry(user, userSettings, duration, comment);
 
         LOGGER.info("Requesting url: {}", url);
         return restTemplate.getForObject(url, String.class);

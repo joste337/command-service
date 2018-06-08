@@ -1,14 +1,18 @@
 package de.jos.service.command.commandservice.model.commands;
 
+import de.jos.service.command.commandservice.controller.BotMessages;
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.database.model.UserSettings;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-@Component("new")
-public class NewCommand extends AbstractCommand {
-
+@Component
+public class ExecuteShortcutCommand extends AbstractCommand {
+    @Override
     public String executeCommandAndGetReply(String userMessage, User user) {
         if (!isValidCommand(userMessage)) {
             return botMessages.getInvalidCommandArgumentsReply();
@@ -17,8 +21,12 @@ public class NewCommand extends AbstractCommand {
         String[] splitMessage = StringUtils.split(userMessage, " ");
         String durationInMinutes = getDurationInMinutes(splitMessage[1]);
         String comment = splitMessage[2];
+        UserSettings userSettings = user.getShortcuts().stream().filter(userSetting -> userSetting.getKey().equals(splitMessage[0])).findFirst().orElse(null);
+        if (userSettings == null) {
+            return botMessages.getInvalidCommandReply();
+        }
 
-        miteService.newEntry(user, user.getCurrentSettingsAsUserSettings(), durationInMinutes, comment);
+        miteService.newEntry(user, userSettings, durationInMinutes, comment);
         return botMessages.getSuccessfullEntryReply(durationInMinutes, comment);
     }
 
@@ -42,9 +50,5 @@ public class NewCommand extends AbstractCommand {
     private String getDurationInMinutes(String duration) {
         String[] split = StringUtils.split(duration, ":");
         return String.valueOf(Integer.valueOf(split[0]) * 60 + Integer.valueOf(split[1]));
-    }
-
-    private String getEntryParametersForUrl(String duration, String comment, User user) {
-        return "?apiKey=" + user.getApiKey() + "&duration=" + duration + "&projectId=" + user.getCurrentProjectId() + "&serviceId=" + user.getCurrentServiceId() + "&comment=" + comment;
     }
 }

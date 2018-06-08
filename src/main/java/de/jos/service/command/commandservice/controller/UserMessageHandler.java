@@ -65,6 +65,7 @@ public class UserMessageHandler implements ApplicationContextAware {
         } else {
             botReply = new BotReply(command.executeCommandAndGetReply(message, user));
         }
+        System.out.println(user.toString());
         userManager.saveUser(user);
         return botReply;
     }

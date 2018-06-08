@@ -10,4 +10,9 @@ public class TimeCommand extends AbstractCommand {
     public boolean isValidCommand(String userMessage) {
         return false;
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }

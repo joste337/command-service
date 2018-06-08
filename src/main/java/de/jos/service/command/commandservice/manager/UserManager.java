@@ -23,8 +23,8 @@ public class UserManager {
 
         appendValueIfNameIsNull(replyMessage,
                 new BasicNameValuePair(user.getApiKey(),botMessages.getNoApiKeyProvidedReply()),
-                new BasicNameValuePair(user.getProjectId(), botMessages.getNoProjectIdProvidedReply()),
-                new BasicNameValuePair(user.getServiceId(), botMessages.getNoServideIdProvidedReply())
+                new BasicNameValuePair(user.getCurrentProjectId(), botMessages.getNoProjectIdProvidedReply()),
+                new BasicNameValuePair(user.getCurrentServiceId(), botMessages.getNoServideIdProvidedReply())
         );
 
         return replyMessage.length() == 0 ? Optional.empty() : Optional.of(replyMessage.toString());

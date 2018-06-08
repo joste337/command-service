@@ -11,4 +11,8 @@ public class ContinueCommand extends AbstractCommand {
     public boolean isValidCommand(String userMessage) {
         return false;
     }
+
+    public String getDescription() {
+        return null;
+    }
 }

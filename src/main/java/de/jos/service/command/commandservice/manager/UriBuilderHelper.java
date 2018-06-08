@@ -2,6 +2,7 @@ package de.jos.service.command.commandservice.manager;
 
 import de.jos.service.command.commandservice.controller.BotMessages;
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.database.model.UserSettings;
 import de.jos.service.command.commandservice.exception.CommandHandlerException;
 import de.jos.service.command.commandservice.model.BotReply;
 import org.apache.http.client.utils.URIBuilder;
@@ -32,12 +33,12 @@ public class UriBuilderHelper {
         uriBuilder.setScheme("http");
     }
 
-    public String buildUriForNewEntry(User user, String duration, String comment) {
+    public String buildUriForNewEntry(User user, UserSettings userSettings, String duration, String comment) {
         uriBuilder.clearParameters();
 
         return buildUrl("/newEntry", user,
-                new BasicNameValuePair("projectId", user.getProjectId()),
-                new BasicNameValuePair("serviceId", user.getServiceId()),
+                new BasicNameValuePair("projectId", userSettings.getProjectId()),
+                new BasicNameValuePair("serviceId", userSettings.getServiceId()),
                 new BasicNameValuePair("duration", duration),
                 new BasicNameValuePair("comment", comment),
                 new BasicNameValuePair("searchParam", null)
