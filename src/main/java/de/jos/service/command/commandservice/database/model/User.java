@@ -1,8 +1,12 @@
 package de.jos.service.command.commandservice.database.model;
 
 
+import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,7 +19,7 @@ public class User {
     private String currentProjectId;
     private String currentServiceName;
     private String currentServiceId;
-    private HashSet<UserSettings> shortcuts = new HashSet<>();
+    private LinkedList<UserSettings> shortcuts = new LinkedList<>();
 
     public User() {
     }
@@ -94,11 +98,11 @@ public class User {
         this.shortcuts.add(userSettings);
     }
 
-    public Set<UserSettings> getShortcuts() {
+    public LinkedList<UserSettings> getShortcuts() {
         return shortcuts;
     }
 
-    public void setShortcuts(HashSet<UserSettings> shortcuts) {
+    public void setShortcuts(LinkedList<UserSettings> shortcuts) {
         this.shortcuts = shortcuts;
     }
 
