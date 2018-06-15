@@ -1,9 +1,10 @@
 package de.jos.service.command.commandservice.model.commands;
 
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.model.BotReply;
 
 public class TimeCommand extends AbstractCommand {
-    public String executeCommandAndGetReply(String userMessage, User user) {
+    public BotReply executeCommandAndGetReply(String userMessage, User user) {
         return null;
     }
 

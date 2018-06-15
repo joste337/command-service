@@ -4,6 +4,7 @@ import de.jos.service.command.commandservice.database.TokenAuthRepository;
 import de.jos.service.command.commandservice.manager.UserManager;
 import de.jos.service.command.commandservice.database.model.User;
 import de.jos.service.command.commandservice.model.BotReply;
+import de.jos.service.command.commandservice.model.MessageOption;
 import de.jos.service.command.commandservice.model.commands.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.parser.HttpParser;
@@ -51,23 +52,26 @@ public class UserMessageHandler implements ApplicationContextAware {
         message = URLDecoder.decode(message, "UTF-8");
         LOGGER.debug("decoded html message: {}", message);
 
-        Command command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);
+        return new BotReply("Message", new MessageOption[] {new MessageOption("option1", "url1"), new MessageOption("option2", "url2"), new MessageOption("option3", "url3")});
 
-        String userId = request.getHeader("client-token") + messengerId;
-        User user = userManager.getUserById(userId, userName);
 
-        BotReply botReply;
+//        Command command = appContext.getBean(StringUtils.split(message, " ")[0], Command.class);
+//
+//        String userId = request.getHeader("client-token") + messengerId;
+//        User user = userManager.getUserById(userId, userName);
+//
+//        BotReply botReply;
 
-        if (command instanceof NewCommand) {
-            botReply = new BotReply(userManager.isNotVeriefiedUser(user).orElse(command.executeCommandAndGetReply(message, user)));
-        } else if (!(command instanceof HelpCommand) && !(command instanceof StartCommand) && !(command instanceof RegisterCommand)){
-            botReply = new BotReply(userManager.isNotRegisteredUser(user).orElse(command.executeCommandAndGetReply(message, user)));
-        } else {
-            botReply = new BotReply(command.executeCommandAndGetReply(message, user));
-        }
-        System.out.println(user.toString());
-        userManager.saveUser(user);
-        return botReply;
+//        if (command instanceof NewCommand) {
+//            botReply = userManager.isNotVeriefiedUser(user).orElse(command.executeCommandAndGetReply(message, user));
+//        } else if (!(command instanceof HelpCommand) && !(command instanceof StartCommand) && !(command instanceof RegisterCommand)){
+//            botReply = userManager.isNotRegisteredUser(user).orElse(command.executeCommandAndGetReply(message, user));
+//        } else {
+//            botReply = command.executeCommandAndGetReply(message, user);
+//        }
+//
+//        userManager.saveUser(user);
+//        return botReply;
     }
 
     @Override

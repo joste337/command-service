@@ -1,11 +1,12 @@
 package de.jos.service.command.commandservice.model.commands;
 
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.model.BotReply;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface Command {
-    String executeCommandAndGetReply(String userMessage, User user);
+    BotReply executeCommandAndGetReply(String userMessage, User user);
 
     boolean isValidCommand(String userMessage);
 

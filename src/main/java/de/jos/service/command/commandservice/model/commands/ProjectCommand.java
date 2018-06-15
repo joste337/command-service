@@ -3,6 +3,7 @@ package de.jos.service.command.commandservice.model.commands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.model.BotReply;
 import de.jos.service.command.commandservice.model.Project;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -12,9 +13,9 @@ import java.util.Arrays;
 
 @Component("project")
 public class ProjectCommand extends AbstractCommand {
-    public String executeCommandAndGetReply(String userMessage, User user) {
+    public BotReply executeCommandAndGetReply(String userMessage, User user) {
         if (!isValidCommand(userMessage)) {
-            return botMessages.getInvalidCommandArgumentsReply();
+            return new BotReply(botMessages.getInvalidCommandArgumentsReply());
         }
 
         String response =  miteService.getAvailableProjectsByName(user, StringUtils.split(userMessage, " ")[1]);
@@ -23,15 +24,15 @@ public class ProjectCommand extends AbstractCommand {
         try {
             projects = new ObjectMapper().readValue(projectsJson.get("projects").toString(), Project[].class);
         } catch (Exception e) {
-            return "mapping exception";
+            return new BotReply("mapping exception");
         }
 
         if (projects.length == 0) {
-            return "no projects found";
+            return new BotReply("no projects found");
         } else {
             user.setCurrentProjectId(projects[0].getId());
             user.setCurrentProjectName(projects[0].getName());
-            return botMessages.getSuccessfullySetProjectIdByNameReply(user.getCurrentProjectName()) + "\n Found Projects:\n" + Arrays.toString(projects);
+            return new BotReply(botMessages.getSuccessfullySetProjectIdByNameReply(user.getCurrentProjectName()) + "\n Found Projects:\n" + Arrays.toString(projects));
         }
     }
 

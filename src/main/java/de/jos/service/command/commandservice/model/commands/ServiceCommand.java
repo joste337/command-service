@@ -14,9 +14,9 @@ import java.util.Arrays;
 
 @Component("service")
 public class ServiceCommand extends AbstractCommand {
-    public String executeCommandAndGetReply(String userMessage, User user) {
+    public BotReply executeCommandAndGetReply(String userMessage, User user) {
         if (!isValidCommand(userMessage)) {
-            return botMessages.getInvalidCommandArgumentsReply();
+            return new BotReply(botMessages.getInvalidCommandArgumentsReply());
         }
 
         String response =  miteService.getAvailableServicesByName(user, StringUtils.split(userMessage, " ")[1]);
@@ -29,11 +29,11 @@ public class ServiceCommand extends AbstractCommand {
         }
 
         if (services.length == 0) {
-            return "no services found";
+            return new BotReply("no services found");
         } else {
             user.setCurrentServiceId(services[0].getId());
             user.setCurrentServiceName(services[0].getName());
-            return botMessages.getSuccessfullySetServiceIdByNameReply(user.getCurrentServiceName()) + "\n Found Services:\n" + Arrays.toString(services);
+            return new BotReply(botMessages.getSuccessfullySetServiceIdByNameReply(user.getCurrentServiceName()) + "\n Found Services:\n" + Arrays.toString(services));
         }
     }
 

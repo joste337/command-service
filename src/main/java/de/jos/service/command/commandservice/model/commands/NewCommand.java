@@ -1,6 +1,7 @@
 package de.jos.service.command.commandservice.model.commands;
 
 import de.jos.service.command.commandservice.database.model.User;
+import de.jos.service.command.commandservice.model.BotReply;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +10,9 @@ import java.util.regex.Pattern;
 @Component("new")
 public class NewCommand extends AbstractCommand {
 
-    public String executeCommandAndGetReply(String userMessage, User user) {
+    public BotReply executeCommandAndGetReply(String userMessage, User user) {
         if (!isValidCommand(userMessage)) {
-            return botMessages.getInvalidCommandArgumentsReply();
+            return new BotReply(botMessages.getInvalidCommandArgumentsReply());
         }
 
         String[] splitMessage = StringUtils.split(userMessage, " ");
@@ -19,7 +20,7 @@ public class NewCommand extends AbstractCommand {
         String comment = splitMessage[2];
 
         miteService.newEntry(user, user.getCurrentSettingsAsUserSettings(), durationInMinutes, comment);
-        return botMessages.getSuccessfullEntryReply(durationInMinutes, comment);
+        return new BotReply(botMessages.getSuccessfullEntryReply(durationInMinutes, comment));
     }
 
     public boolean isValidCommand(String userMessage) {
