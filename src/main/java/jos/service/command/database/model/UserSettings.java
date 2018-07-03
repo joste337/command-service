@@ -1,16 +1,22 @@
 package jos.service.command.database.model;
 
+import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class UserSettings {
+public class UserSettings implements Serializable{
     @Id
     private String key;
     private String projectId;
     private String projectName;
     private String serviceId;
     private String serviceName;
+
+    public UserSettings() {
+    }
 
     public UserSettings(String key, String projectId, String projectName, String serviceId, String serviceName) {
         this.key = key;
