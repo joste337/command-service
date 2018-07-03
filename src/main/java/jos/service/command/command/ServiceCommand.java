@@ -7,26 +7,34 @@ import jos.service.command.exception.CommandHandlerException;
 import jos.service.command.exception.InvalidCommandOptionsException;
 import jos.service.command.model.CommandServiceReply;
 import jos.service.command.model.Service;
+import jos.service.command.service.MiteService;
 import jos.service.command.util.BotMessages;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @Component("service")
-public class ServiceCommand extends AbstractCommand {
+public class ServiceCommand implements Command {
+    @Autowired
+    private MiteService miteService;
+
     @Override
     public String getDescription() {
         return null;
     }
 
     @Override
-    public CommandServiceReply executeCommandAndGetReply(String userMessage, User user) {
-        String response =  miteService.getAvailableServicesByName(user, StringUtils.split(userMessage, " ")[1]);
+    public CommandServiceReply executeCommandAndGetReply(String[] splitUserMessage, User user) {
+        validate(splitUserMessage);
+
+        String response =  miteService.getAvailableServicesByName(user, splitUserMessage[1]);
         JSONObject servicesJson = new JSONObject(response);
         Service[] services;
+
         try {
             services = new ObjectMapper().readValue(servicesJson.get("services").toString(), Service[].class);
         } catch (Exception e) {
@@ -42,12 +50,8 @@ public class ServiceCommand extends AbstractCommand {
         }
     }
 
-    @Override
-    public void isInvalidCommand(String userMessage) {
-        String[] splitMessage = StringUtils.split(userMessage, " ");
-        if(splitMessage.length > 1 && splitMessage[1].length() > 2) {
-            return;
-        } else {
+    private void validate(String[] splitUserMessage) {
+        if(splitUserMessage.length != 2 && splitUserMessage[1].length() < 2) {
             throw new InvalidCommandOptionsException();
         }
     }

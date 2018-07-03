@@ -1,6 +1,5 @@
 package jos.service.command.controller;
 
-import jos.service.command.command.ExecuteShortcutCommand;
 import jos.service.command.exception.InvalidCommandOptionsException;
 import jos.service.command.manager.UserManager;
 import jos.service.command.model.CommandServiceReply;
@@ -19,8 +18,6 @@ public class ErrorAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorAdvice.class);
     @Autowired
     private UserManager userManager;
-    @Autowired
-    private ExecuteShortcutCommand executeShortcutCommand;
 
     @ExceptionHandler({NoSuchBeanDefinitionException.class})
     @ResponseBody

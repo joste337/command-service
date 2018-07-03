@@ -2,8 +2,7 @@ package jos.service.command.database.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class User {
@@ -15,7 +14,7 @@ public class User {
     private String currentProjectId;
     private String currentServiceName;
     private String currentServiceId;
-    private HashSet<UserSettings> shortcuts = new HashSet<>();
+    private ArrayList<UserSettings> shortcuts = new ArrayList<>();
 
     public User() {
     }
@@ -94,11 +93,11 @@ public class User {
         this.shortcuts.add(userSettings);
     }
 
-    public Set<UserSettings> getShortcuts() {
+    public ArrayList<UserSettings> getShortcuts() {
         return shortcuts;
     }
 
-    public void setShortcuts(HashSet<UserSettings> shortcuts) {
+    public void setShortcuts(ArrayList<UserSettings> shortcuts) {
         this.shortcuts = shortcuts;
     }
 
@@ -106,20 +105,20 @@ public class User {
         return new UserSettings(currentProjectId, currentServiceId);
     }
 
-    public String toReplyString() {
-        String project;
-        String service;
-        if (currentProjectId == null) {
-            project = "You didn't set a project yet!";
-        } else {
-            project = "Your current project: " + currentProjectName + "; " + currentProjectId;
+    public String getStatus() {
+        StringBuilder status = new StringBuilder();
+        status.append("Yout settings: \n");
+        if (currentProjectId != null) {
+            status.append("Your current project: ").append(currentProjectName).append("; ").append(currentProjectId).append("\n");
         }
-        if (this.currentServiceId == null) {
-            service = "You didn't set a service yet!";
-        } else {
-            service = "Your current service: " + currentServiceName + "; " + currentServiceId;
+        if (currentServiceId != null) {
+            status.append("Your current service: ").append(currentServiceName).append("; ").append(currentServiceId).append("\n");
         }
-        return project + "\n" + service;
+        if (!shortcuts.isEmpty()) {
+            status.append("Your shortcuts: \n");
+            shortcuts.forEach(userSetting -> status.append(userSetting.getKey()).append("; for project ").append(userSetting.getProjectName()).append(" and service").append(userSetting.getServiceName()));
+        }
+        return status.toString();
     }
 
     @Override

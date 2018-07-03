@@ -5,12 +5,12 @@ import jos.service.command.database.model.User;
 import jos.service.command.model.CommandServiceReply;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component("status")
-public class StatusCommand extends AbstractCommand {
-    public CommandServiceReply executeCommandAndGetReply(String userMessage, User user) {
-        return new CommandServiceReply(user.toReplyString());
+public class StatusCommand implements Command {
+    @Override
+    public CommandServiceReply executeCommandAndGetReply(String[] splitUserMessage, User user) {
+        return new CommandServiceReply(user.getStatus());
     }
 
     @Override

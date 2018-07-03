@@ -7,23 +7,30 @@ import jos.service.command.exception.CommandHandlerException;
 import jos.service.command.exception.InvalidCommandOptionsException;
 import jos.service.command.model.CommandServiceReply;
 import jos.service.command.model.Project;
+import jos.service.command.service.MiteService;
 import jos.service.command.util.BotMessages;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component("project")
-public class ProjectCommand extends AbstractCommand {
+public class ProjectCommand implements Command {
+    @Autowired
+    private MiteService miteService;
+
     @Override
     public String getDescription() {
         return null;
     }
 
     @Override
-    public CommandServiceReply executeCommandAndGetReply(String userMessage, User user) {
-        String response =  miteService.getAvailableProjectsByName(user, StringUtils.split(userMessage, " ")[1]);
+    public CommandServiceReply executeCommandAndGetReply(String[] splitUserMessage, User user) {
+        validate(splitUserMessage);
+
+        String response =  miteService.getAvailableProjectsByName(user, splitUserMessage[1]);
         JSONObject projectsJson = new JSONObject(response);
         Project[] projects;
         try {
@@ -41,12 +48,8 @@ public class ProjectCommand extends AbstractCommand {
         }
     }
 
-    @Override
-    public void isInvalidCommand(String userMessage) {
-        String[] splitMessage = StringUtils.split(userMessage, " ");
-        if (splitMessage.length > 1 && splitMessage[1].length() > 2) {
-            return;
-        } else {
+    private void validate(String[] splitUserMessage) {
+        if (splitUserMessage.length != 2 && splitUserMessage[1].length() < 2) {
             throw new InvalidCommandOptionsException();
         }
     }
