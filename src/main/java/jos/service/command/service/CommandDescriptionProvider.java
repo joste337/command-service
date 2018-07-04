@@ -1,19 +1,19 @@
-package jos.service.command.manager;
+package jos.service.command.service;
 
 import jos.service.command.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
-public class DescriptionManager {
+@Service
+public class CommandDescriptionProvider {
     @Autowired
-    private List<Command> list;
+    private List<Command> commandList;
 
     public String getAllDescriptions() {
         StringBuilder result = new StringBuilder();
-        list.forEach(command -> result.append(command.getDescription()).append("\n"));
+        commandList.forEach(command -> result.append(command.getDescription()).append("\n"));
         return result.toString();
     }
 }

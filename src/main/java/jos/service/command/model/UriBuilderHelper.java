@@ -1,21 +1,20 @@
-package jos.service.command.manager;
+package jos.service.command.model;
 
 
 import jos.service.command.database.model.User;
 import jos.service.command.database.model.UserSettings;
 import jos.service.command.exception.CommandHandlerException;
-import jos.service.command.model.CommandServiceReply;
 import jos.service.command.util.BotMessages;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
-@Component
+@Service
 public class UriBuilderHelper {
     private URIBuilder uriBuilder;
     @Value("${miteurl.host}")

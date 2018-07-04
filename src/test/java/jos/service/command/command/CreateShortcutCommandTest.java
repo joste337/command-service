@@ -4,6 +4,7 @@ import jos.service.command.database.model.User;
 import jos.service.command.exception.InvalidCommandOptionsException;
 import jos.service.command.model.CommandServiceReply;
 import jos.service.command.util.BotMessages;
+import jos.service.command.util.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ public class CreateShortcutCommandTest {
 
     @Before
     public void setUp() {
-        testUser = new User("id", "token", "projectName", "projectId", "serviceName", "serviceId");
+        testUser = TestUtils.getTestUser();
     }
 
     @Test
@@ -33,7 +34,7 @@ public class CreateShortcutCommandTest {
         CommandServiceReply commandServiceReply = createShortcutCommand.executeCommandAndGetReply(userMessage, testUser);
 
         assertThat(testUser.getShortcuts().get(0).getKey()).isEqualTo("myShortcut");
-        assertThat(testUser.getShortcuts().get(0).getProjectId()).isEqualTo("projectId");
+        assertThat(testUser.getShortcuts().get(0).getProjectId()).isEqualTo(testUser.getCurrentProjectId());
         assertThat(commandServiceReply.getMessage()).isEqualTo(BotMessages.SUCCESSFULL_SHORTCUT_REPLY);
     }
 

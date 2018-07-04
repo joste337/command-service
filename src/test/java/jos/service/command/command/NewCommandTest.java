@@ -1,40 +1,50 @@
 package jos.service.command.command;
 
+import de.zdf.utils.test.wiremock.WiremockTestRule;
 import jos.service.command.database.model.User;
 import jos.service.command.database.model.UserSettings;
 import jos.service.command.exception.InvalidCommandOptionsException;
 import jos.service.command.model.CommandServiceReply;
+import jos.service.command.model.UriBuilderHelper;
 import jos.service.command.service.MiteService;
 import jos.service.command.util.BotMessages;
+import jos.service.command.util.TestUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NewCommandTest {
+    @Rule
+    public WiremockTestRule wmockRule = WiremockTestRule.builder()
+            .targetUrl("http://localhost:8700")
+            .recordMode(false)
+            .build();
+
     @Mock
     private MiteService mockMiteService;
     @Autowired
     private NewCommand newCommand;
+    @Autowired
+    private UriBuilderHelper uriBuilderHelper;
 
     private User testUser;
     private UserSettings testUserSettings;
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(newCommand, "miteService", mockMiteService);
-        doReturn(null).when(mockMiteService).newEntry(any(), any(), any(), any());
-        testUser = new User();
-        testUserSettings = new UserSettings("projectId", "serviceId");
+        TestUtils.setWiremockPort(wmockRule.getWiremockPort(), uriBuilderHelper);
+        testUser = TestUtils.getTestUser();
+        testUserSettings = TestUtils.getTestUserSettings();
     }
 
     @Test

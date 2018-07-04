@@ -1,6 +1,6 @@
 package jos.service.command.command;
 
-import de.zdf.utils.test.wiremock.WiremockTestBase;
+import de.zdf.utils.test.wiremock.WiremockTestRule;
 import jos.service.command.database.model.User;
 import jos.service.command.model.CommandServiceReply;
 import jos.service.command.service.MiteService;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +29,7 @@ public class ProjectCommandTest {
     private MiteService mockMiteService;
 
     @Rule
-    public WiremockTestBase wmockRule = WiremockTestBase.builder()
+    public WiremockTestRule wmockRule = WiremockTestRule.builder()
             .targetUrl("https://www.zdf.de")
             .recordMode(true)
             .build();

@@ -2,7 +2,7 @@ package jos.service.command.service;
 
 import jos.service.command.database.model.User;
 import jos.service.command.database.model.UserSettings;
-import jos.service.command.manager.UriBuilderHelper;
+import jos.service.command.model.UriBuilderHelper;
 import jos.service.command.model.CommandServiceReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

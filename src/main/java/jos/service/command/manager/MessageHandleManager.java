@@ -38,7 +38,7 @@ public class MessageHandleManager {
         try {
             return command.executeCommandAndGetReply(splitUserMessage, user);
         } catch (NoSuchBeanDefinitionException e) {
-            UserSettings userSettings = user.getShortcuts().stream().filter(userSettings1 -> userSettings1.getKey().equals(splitUserMessage[0])).findFirst().orElseThrow(() -> new RuntimeException(""));
+            UserSettings userSettings = user.getShortcuts().stream().filter(userSettings1 -> userSettings1.getKey().equals(splitUserMessage[0])).findFirst().orElseThrow(() -> e);
             return newCommand.executeCommandAndGetReply(splitUserMessage, user, userSettings);
         }
     }
