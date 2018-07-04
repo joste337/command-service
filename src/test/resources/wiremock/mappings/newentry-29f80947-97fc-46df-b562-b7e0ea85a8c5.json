@@ -1,0 +1,18 @@
+{
+  "id" : "29f80947-97fc-46df-b562-b7e0ea85a8c5",
+  "name" : "newentry",
+  "request" : {
+    "url" : "/newEntry?apiKey=527f1fde5d5609c5&projectId=2351287&serviceId=253445&duration=120&comment=abcd&searchParam",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"success\":true,\"services\":null,\"projects\":null,\"messageOptions\":null}",
+    "headers" : {
+      "Content-Type" : "application/json;charset=UTF-8",
+      "Date" : "Wed, 04 Jul 2018 07:40:44 GMT"
+    }
+  },
+  "uuid" : "29f80947-97fc-46df-b562-b7e0ea85a8c5",
+  "persistent" : true
+}
